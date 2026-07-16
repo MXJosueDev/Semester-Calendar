@@ -1,0 +1,184 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "minecraftmedium";
+  src:
+    url("/fonts/minecraft.woff2") format("woff2"),
+    url("/fonts/minecraft.woff") format("woff"),
+    url("/fonts/minecraft.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@theme {
+  /* Font */
+  --font-minecraft: minecraftmedium;
+
+  /* Colors */
+  /* Text */
+  --color-subtitle: #fff81f;
+  --color-subtitle-shadow: #736f00;
+
+  --color-footer: #ffffff;
+  --color-footer-shadow: #000000;
+
+  --drop-shadow-text: 0.1em 0.1em 0;
+
+  /* Container */
+  --color-container-background: #c6c6c6;
+  --color-container-border-top-left: #ffffff;
+  --color-container-border-bottom-right: #555555;
+  --color-container-border-corner: #c6c6c6;
+  --color-container-border-external: #000000;
+
+  --color-container-text: #3f3f3f;
+  --color-container-milestone-text: #000000;
+
+  --spacing-container-padding: calc(var(--spacing) * 2);
+  --border-width-container: calc(var(--spacing) * 1);
+  --border-width-container-external: calc(var(--spacing) * 0.5);
+
+  /* Slot */
+  --color-slot-background: #8b8b8b;
+  --color-slot-border-top-left: #373737;
+  --color-slot-border-bottom-right: #ffffff;
+  --color-slot-border-corner: #8b8b8b;
+
+  --color-slot-quantity: #ffffff;
+  --color-slot-quantity-shadow: #000000;
+
+  --spacing-slot-padding: calc(var(--spacing) * 0.5);
+  --spacing-slot-padding-lg: calc(var(--spacing) * 1);
+  --border-width-slot: calc(var(--spacing) * 0.5);
+
+  /* Player */
+  --color-player-background: #000000;
+
+  /* Animations */
+  --animate-scale-pulse: scale-pulse 1.5s ease-in-out infinite;
+
+  @keyframes scale-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  /* Background */
+  --animate-background: bg-movement 60s ease-in-out infinite alternate;
+
+  @keyframes bg-movement {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+}
+
+@utility subtitle {
+  @apply font-minecraft text-subtitle drop-shadow-text drop-shadow-subtitle-shadow absolute bottom-1/2 right-0 translate-1/2 -rotate-25 text-xs sm:text-base md:text-lg lg:text-xl xl:text-2xl animate-scale-pulse;
+}
+
+/* Container */
+@utility mc-container {
+  @apply flex items-start justify-between border-container-external border-container-border-external bg-container-background p-container-padding;
+
+  box-shadow:
+    inset var(--border-width-container) var(--border-width-container) 0px 0px
+      var(--color-container-border-top-left),
+    inset calc(var(--border-width-container) * -1) calc(var(--border-width-container) * -1) 0px 0px
+      var(--color-container-border-bottom-right);
+
+  position: relative;
+
+  /* Esquina inferior izquierda */
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: var(--border-width-container);
+    height: var(--border-width-container);
+    background-color: var(--color-container-border-corner);
+  }
+
+  /* Esquina superior derecha */
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: var(--border-width-container);
+    height: var(--border-width-container);
+    background-color: var(--color-container-border-corner);
+  }
+}
+
+@utility container-text {
+  @apply font-minecraft text-container-text text-sm md:text-base lg:text-lg;
+}
+
+@utility milestone-text {
+  @apply font-minecraft text-container-milestone-text text-xs lg:text-sm;
+
+  text-wrap: nowrap;
+}
+
+/* Slot */
+
+@utility slot-border {
+  box-shadow:
+    inset var(--border-width-slot) var(--border-width-slot) 0px 0px
+      var(--color-slot-border-top-left),
+    inset calc(var(--border-width-slot) * -1) calc(var(--border-width-slot) * -1) 0px 0px
+      var(--color-slot-border-bottom-right);
+
+  position: relative;
+
+  /* Esquina inferior izquierda */
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: var(--border-width-slot);
+    height: var(--border-width-slot);
+    background-color: var(--color-slot-border-corner);
+  }
+
+  /* Esquina superior derecha */
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: var(--border-width-slot);
+    height: var(--border-width-slot);
+    background-color: var(--color-slot-border-corner);
+  }
+}
+
+@utility slot {
+  @apply flex items-center justify-center bg-slot-background p-slot-padding lg:p-slot-padding-lg aspect-square w-8 md:w-12 lg:w-16;
+}
+
+@utility slot-quantity {
+  @apply font-minecraft text-sm md:text-xl lg:text-2xl text-slot-quantity drop-shadow-text drop-shadow-slot-quantity-shadow absolute bottom-slot-padding right-slot-padding lg:bottom-slot-padding-lg lg:right-slot-padding-lg leading-none;
+}
+
+/* Player */
+
+@utility player {
+  @apply flex items-center justify-center bg-player-background p-slot-padding lg:p-slot-padding-lg aspect-3/4 w-24 md:w-36 lg:w-48;
+}
+
+@utility rendering-pixelated {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+}

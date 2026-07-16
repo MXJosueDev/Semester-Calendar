@@ -1,0 +1,11 @@
+---
+import Slot from "../Slot.astro";
+---
+
+<div>
+  <p class="container-text">Weeks</p>
+
+  <div class="grid grid-cols-6">
+    {[...Array(6 * 4)].map((_, index) => <Slot quantity={index + 1} />)}
+  </div>
+</div>
