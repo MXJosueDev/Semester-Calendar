@@ -10,7 +10,7 @@ import Milestone from "@/components/minecraft/milestone/Milestone.astro";
     <Title />
 
     <div
-      class="flex flex-col md:flex-row items-center justify-center h-full gap-3 mt-6 mx-1.5 max-w-4xl"
+      class="flex flex-col md:flex-row items-center justify-center h-full gap-y-3 gap-x-5 mt-6 mx-1.5 max-w-4xl"
     >
       <Milestone />
 
@@ -18,3 +18,16 @@ import Milestone from "@/components/minecraft/milestone/Milestone.astro";
     </div>
   </div>
 </Layout>
+
+<!-- Reloads page if needed -->
+<script>
+  import { getElapsedWeeks } from "@/utils/calendar.ts";
+
+  let previousElapsedWeeks = getElapsedWeeks();
+
+  setInterval(() => {
+    if (previousElapsedWeeks !== getElapsedWeeks()) {
+      location.reload();
+    }
+  }, 1000 * 1);
+</script>

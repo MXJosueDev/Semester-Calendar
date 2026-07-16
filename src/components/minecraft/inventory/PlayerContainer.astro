@@ -1,6 +1,11 @@
 ---
 import Player from "../Player.astro";
 import Slot from "../Slot.astro";
+
+import { getMilestones, isMilestoneCompleted } from "@/utils/calendar.ts";
+import { getTextureURL } from "@/utils/textures";
+
+const milestones = getMilestones();
 ---
 
 <div>
@@ -8,10 +13,16 @@ import Slot from "../Slot.astro";
 
   <div class="flex">
     <div>
-      <Slot />
-      <Slot />
-      <Slot />
-      <Slot />
+      {
+        milestones.map(milestone => {
+          const isCompleted = isMilestoneCompleted(milestone.milestoneId);
+          const image = isCompleted
+            ? getTextureURL(milestone.item_texture)
+            : getTextureURL(milestone.slot_texture);
+
+          return <Slot image={image} />;
+        })
+      }
     </div>
     <div>
       <Player />

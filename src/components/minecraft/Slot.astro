@@ -1,11 +1,10 @@
 ---
 import type { ImageMetadata } from "astro";
-import { Image } from "astro:assets";
 
 export interface SlotProps {
-  image?: ImageMetadata;
+  image?: ImageMetadata | string;
   quantity?: number;
-  completedImage?: ImageMetadata;
+  completedImage?: ImageMetadata | string;
   completed?: boolean;
 }
 
@@ -17,14 +16,18 @@ const { image, quantity, completedImage, completed } = Astro.props as Props;
 <div class="slot slot-border">
   {
     image && (
-      <Image src={image} alt="Item" class="w-full h-full object-contain rendering-pixelated" />
+      <img
+        src={typeof image == "string" ? image : image.src}
+        alt="Item"
+        class="w-full h-full object-contain rendering-pixelated"
+      />
     )
   }
 
   {
     completedImage && completed && (
-      <Image
-        src={completedImage}
+      <img
+        src={typeof completedImage == "string" ? completedImage : completedImage.src}
         alt="Completed Image"
         class="w-full h-full object-contain rendering-pixelated absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-black/50"
       />

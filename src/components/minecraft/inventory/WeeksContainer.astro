@@ -1,11 +1,30 @@
 ---
+import { getTextureURL } from "@/utils/textures";
 import Slot from "../Slot.astro";
+import { getElapsedWeeks, getWeeks } from "@/utils/calendar.ts";
+
+const SLOTS = 24;
+
+const weeks = getWeeks();
 ---
 
 <div>
   <p class="container-text">Weeks</p>
 
   <div class="grid grid-cols-6">
-    {[...Array(6 * 4)].map((_, index) => <Slot quantity={index + 1} />)}
+    {
+      weeks.map((week, index) => {
+        const elapsedWeeks = getElapsedWeeks();
+        const completed = index < elapsedWeeks;
+
+        return <Slot completed={completed} image={getTextureURL(week.item_texture)} completedImage={getTextureURL("cancel")} quantity={index + 1} />;
+      })
+    }
+
+    {
+      (Array.from({ length: SLOTS - weeks.length }, (_) => {
+        return <Slot />;
+      }))
+    }
   </div>
 </div>
