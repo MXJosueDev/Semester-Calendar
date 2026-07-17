@@ -1,5 +1,9 @@
 ---
 import MainTitle from "@/components/landing/MainTitle.astro";
+
+import { getSemester } from "@/utils/calendar.ts";
+
+const semester = getSemester();
 ---
 
 <div class="relative max-w-2xl w-[60%]">
@@ -8,6 +12,6 @@ import MainTitle from "@/components/landing/MainTitle.astro";
   <span
     class="subtitle"
   >
-    2026-2 Edition!
+    {semester} Edition!
   </span>
 </div>

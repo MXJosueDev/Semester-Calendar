@@ -17,6 +17,12 @@ const getSemesterData = (): SemesterData => {
   return semesterData as SemesterData;
 };
 
+export const getSemester = (): string => {
+  const data = getSemesterData();
+
+  return data.semester
+}
+
 export const getElapsedWeeks = (): number => {
   const data = getSemesterData();
   const startDate = new Date(data.startDate);
