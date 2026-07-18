@@ -1,3 +1,3 @@
 export const getTextureURL = (texture: string) => {
-  return `/assets/textures/${texture}.png`
+  return `/assets/textures/${texture}`
 }
