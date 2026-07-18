@@ -1,25 +1,8 @@
 ---
-import { getTextureURL } from "@/utils/textures";
 import Container from "../Container.astro";
-import MilestoneSlot from "./MilestoneSlot.astro";
-
-import { getMilestones, isMilestoneCompleted } from "@/utils/calendar.ts";
-
-const milestones = getMilestones();
+import MilestoneContainer from "./MilestoneContainer";
 ---
 
 <Container>
-  <div class="flex flex-col">
-    <p class="container-text">Milestone</p>
-
-    <div class="flex flex-row md:flex-col gap-x-3 gap-y-1">
-      {
-        milestones.map(milestone => {
-          const isCompleted = isMilestoneCompleted(milestone.milestoneId);
-
-          return <MilestoneSlot milestone={milestone.milestone} image={getTextureURL(milestone.item_texture)} completedImage={getTextureURL("checkmark")} completed={isCompleted} />;
-        })
-      }
-    </div>
-  </div>
+  <MilestoneContainer client:load />
 </Container>
