@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import '@hackernoon/pixel-icon-library/fonts/iconfont.css';
 
 @font-face {
   font-family: "minecraftmedium";
@@ -82,6 +83,10 @@
 
 @utility subtitle {
   @apply font-minecraft text-subtitle drop-shadow-text drop-shadow-subtitle-shadow absolute bottom-1/2 right-0 translate-1/2 -rotate-25 text-xs sm:text-base md:text-lg lg:text-xl xl:text-2xl animate-scale-pulse;
+}
+
+@utility footer-text {
+  @apply text-footer drop-shadow-text drop-shadow-footer-shadow;
 }
 
 /* Container */

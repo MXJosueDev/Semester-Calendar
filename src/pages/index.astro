@@ -3,11 +3,16 @@ import Layout from "@/layouts/Layout.astro";
 import Title from "@/components/landing/Title.astro";
 import Inventory from "@/components/minecraft/inventory/Inventory.astro";
 import Milestone from "@/components/minecraft/milestone/Milestone.astro";
+import MusicPlayer from "@/components/shared/MusicPlayer.astro";
 ---
 
 <Layout>
   <div class="flex flex-col items-center">
-    <Title />
+    <div class="flex justify-between gap-2">
+      <Title />
+      <MusicPlayer />
+    </div>
+
 
     <div
       class="flex flex-col md:flex-row items-center justify-center h-full gap-y-3 gap-x-5 mt-6 mx-1.5 max-w-4xl"
