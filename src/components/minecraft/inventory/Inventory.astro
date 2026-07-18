@@ -1,0 +1,12 @@
+---
+import Container from "../Container.astro";
+import PlayerContainer from "./PlayerContainer";
+import WeeksContainer from "./WeeksContainer";
+---
+
+<Container>
+  <div class="flex gap-4 md:gap-6">
+    <PlayerContainer client:load />
+    <WeeksContainer client:load />
+  </div>
+</Container>

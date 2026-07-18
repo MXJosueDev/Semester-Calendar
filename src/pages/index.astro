@@ -1,11 +1,20 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "@/layouts/Layout.astro";
+import Title from "@/components/landing/Title.astro";
+import Inventory from "@/components/minecraft/inventory/Inventory.astro";
+import Milestone from "@/components/minecraft/milestone/Milestone.astro";
 ---
 
 <Layout>
-	<Welcome />
+  <div class="flex flex-col items-center">
+    <Title />
+
+    <div
+      class="flex flex-col md:flex-row items-center justify-center h-full gap-y-3 gap-x-5 mt-6 mx-1.5 max-w-4xl"
+    >
+      <Milestone />
+
+      <Inventory />
+    </div>
+  </div>
 </Layout>
