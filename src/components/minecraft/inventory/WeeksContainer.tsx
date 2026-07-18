@@ -23,7 +23,7 @@ const WeeksContainer = () => {
             <Slot
               completed={completed}
               image={getTextureURL(week.item_texture)}
-              completedImage={getTextureURL("cancel")}
+              completedImage={getTextureURL("ui/checkmark.png")}
               quantity={index + 1}
               key={index + 1}
             />

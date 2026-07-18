@@ -22,7 +22,7 @@ const MilestoneContainer = () => {
             <MilestoneSlot
               milestone={milestone.milestone}
               image={getTextureURL(milestone.item_texture)}
-              completedImage={getTextureURL("checkmark")}
+              completedImage={getTextureURL("ui/checkmark.png")}
               completed={isCompleted}
               key={milestone.milestoneId}
             />
