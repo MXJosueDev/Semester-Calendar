@@ -18,16 +18,3 @@ import Milestone from "@/components/minecraft/milestone/Milestone.astro";
     </div>
   </div>
 </Layout>
-
-<!-- Reloads page if needed -->
-<script>
-  import { getElapsedWeeks } from "@/utils/calendar.ts";
-
-  let previousElapsedWeeks = getElapsedWeeks();
-
-  setInterval(() => {
-    if (previousElapsedWeeks !== getElapsedWeeks()) {
-      location.reload();
-    }
-  }, 1000 * 1);
-</script>
