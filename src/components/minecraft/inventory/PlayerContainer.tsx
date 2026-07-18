@@ -3,7 +3,7 @@ import Player from "../Player";
 import Slot from "../Slot";
 
 import { getMilestones, isMilestoneCompleted } from "@/utils/calendar.ts";
-import { getTextureURL } from "@/utils/textures";
+import { getTextureURL } from "@/utils/resources";
 
 const PlayerContainer = () => {
   const calendar = useCalendar();

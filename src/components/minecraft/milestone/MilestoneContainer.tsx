@@ -1,4 +1,4 @@
-import { getTextureURL } from "@/utils/textures";
+import { getTextureURL } from "@/utils/resources";
 import MilestoneSlot from "./MilestoneSlot";
 
 import { getMilestones, isMilestoneCompleted } from "@/utils/calendar.ts";

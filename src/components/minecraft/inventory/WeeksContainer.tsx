@@ -1,4 +1,4 @@
-import { getTextureURL } from "@/utils/textures";
+import { getTextureURL } from "@/utils/resources";
 import Slot from "../Slot";
 import { getElapsedWeeks, getWeeks } from "@/utils/calendar.ts";
 import useCalendar from "@/hooks/useCalendar";
