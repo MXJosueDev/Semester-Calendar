@@ -1,5 +1,6 @@
 export const joinRoutes = (...routes: string[]): string => {
-  return routes.map(route => route.replace(/(^\/+|\/+$)/g, '')).join('/');
+  const joined = routes.map(route => route.replace(/(^\/+|\/+$)/g, '')).join('/');
+  return joined.startsWith('http') ? joined : `/${joined}`;
 }
 
 export const getTextureURL = (texture: string) => {
