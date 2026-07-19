@@ -1,7 +1,8 @@
 import { getTextureURL } from "@/utils/resources";
 import Slot from "../Slot";
-import { getElapsedWeeks, getWeeks } from "@/utils/calendar.ts";
+import { getElapsedWeeks, getWeeks, getWeeksTo, getWeekStartDate, getWeekEndDate } from "@/utils/calendar.ts";
 import useCalendar from "@/hooks/useCalendar";
+import Tooltip from "../Tooltip";
 
 const SLOTS = 24;
 
@@ -9,7 +10,7 @@ const WeeksContainer = () => {
   const calendar = useCalendar();
 
   const weeks = getWeeks();
-  
+
   return (
     <div>
       <p className="container-text">Weeks</p>
@@ -20,13 +21,19 @@ const WeeksContainer = () => {
           const completed = index < elapsedWeeks;
 
           return (
-            <Slot
-              completed={completed}
-              image={getTextureURL(week.item_texture)}
-              completedImage={getTextureURL("ui/checkmark.png")}
-              quantity={index + 1}
+            <Tooltip
+              tooltipTitle={`${week.weekColor}${week.weekType} Week`}
+              text={`&7From: ${week.weekColor}${getWeekStartDate(week).toLocaleDateString()}\n&7To: ${week.weekColor}${getWeekEndDate(week).toLocaleDateString()}\n&7Weeks to: ${completed ? "&aCompleted" : `${week.weekColor}${getWeeksTo(week)}`}`}
               key={index + 1}
-            />
+            >
+              <Slot
+                completed={completed}
+                image={getTextureURL(week.item_texture)}
+                completedImage={getTextureURL("ui/checkmark.png")}
+                quantity={index + 1}
+                key={index + 1}
+              />
+            </Tooltip>
           );
         })}
 
