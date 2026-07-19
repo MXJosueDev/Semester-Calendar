@@ -1,5 +1,6 @@
 ---
 import { getMusicURL } from "@/utils/resources";
+import Tooltip from "../minecraft/Tooltip";
 ---
 
 <audio id="music" autoplay loop preload="auto">
@@ -7,9 +8,11 @@ import { getMusicURL } from "@/utils/resources";
   <source src={getMusicURL("home.mp3")} type="audio/mpeg" />
 </audio>
 
-<button id="music-btn" class="text-3xl footer-text">
-  <i class="hn hn-sound-on"></i>
-</button>
+<Tooltip client:load tooltipTitle="&bMusic" text="&7Mute/Unmute">
+  <button id="music-btn" class="text-3xl footer-text">
+    <i class="hn hn-sound-on"></i>
+  </button>
+</Tooltip>
 
 <script>
   import { playClickSound } from "@/utils/sounds";

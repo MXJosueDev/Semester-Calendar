@@ -1,0 +1,189 @@
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+
+interface TooltipProps {
+  tooltipTitle: string;
+  text: string;
+  children: React.ReactNode;
+}
+
+const MINECRAFT_COLORS: Record<string, string> = {
+  "0": "var(--color-minecraft-black)",
+  "1": "var(--color-minecraft-dark-blue)",
+  "2": "var(--color-minecraft-dark-green)",
+  "3": "var(--color-minecraft-dark-aqua)",
+  "4": "var(--color-minecraft-dark-red)",
+  "5": "var(--color-minecraft-dark-purple)",
+  "6": "var(--color-minecraft-gold)",
+  "7": "var(--color-minecraft-gray)",
+  "8": "var(--color-minecraft-dark-gray)",
+  "9": "var(--color-minecraft-blue)",
+  a: "var(--color-minecraft-green)",
+  b: "var(--color-minecraft-aqua)",
+  c: "var(--color-minecraft-red)",
+  d: "var(--color-minecraft-light-purple)",
+  e: "var(--color-minecraft-yellow)",
+  f: "var(--color-minecraft-white)",
+};
+
+type MinecraftStyleState = {
+  color?: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  strikethrough?: boolean;
+};
+
+const normalizeMinecraftText = (value: string) => value.replace(/\r\n|\r|\\n/g, "\n");
+
+const getMinecraftStyle = ({
+  color,
+  bold,
+  italic,
+  underline,
+  strikethrough,
+}: MinecraftStyleState): React.CSSProperties => ({
+  color: color || "var(--color-minecraft-gray)", // Gris por defecto si no hay color
+  fontWeight: bold ? 700 : undefined,
+  fontStyle: italic ? "italic" : undefined,
+  textDecorationLine:
+    [underline ? "underline" : null, strikethrough ? "line-through" : null]
+      .filter(Boolean)
+      .join(" ") || undefined,
+});
+
+const renderMinecraftText = (value: string, keyPrefix: string) => {
+  const nodes: React.ReactNode[] = [];
+  const formatRegex = /&([0-9a-fk-or])/gi;
+  const normalizedValue = normalizeMinecraftText(value);
+  let lastIndex = 0;
+  let styleState: MinecraftStyleState = {};
+
+  const pushText = (text: string) => {
+    if (!text) return;
+    nodes.push(
+      <span key={`${keyPrefix}-${nodes.length}`} style={getMinecraftStyle(styleState)}>
+        {text}
+      </span>
+    );
+  };
+
+  for (
+    let match = formatRegex.exec(normalizedValue);
+    match !== null;
+    match = formatRegex.exec(normalizedValue)
+  ) {
+    pushText(normalizedValue.slice(lastIndex, match.index));
+
+    const code = match[1].toLowerCase();
+
+    if (code === "r") {
+      styleState = {};
+    } else if (code in MINECRAFT_COLORS) {
+      styleState = {
+        color: MINECRAFT_COLORS[code],
+        bold: false,
+        italic: false,
+        underline: false,
+        strikethrough: false,
+      };
+    } else if (code === "l") {
+      styleState = { ...styleState, bold: true };
+    } else if (code === "o") {
+      styleState = { ...styleState, italic: true };
+    } else if (code === "n") {
+      styleState = { ...styleState, underline: true };
+    } else if (code === "m") {
+      styleState = { ...styleState, strikethrough: true };
+    }
+
+    lastIndex = formatRegex.lastIndex;
+  }
+
+  pushText(normalizedValue.slice(lastIndex));
+
+  return nodes;
+};
+
+const Tooltip = ({ tooltipTitle, text, children }: TooltipProps) => {
+  const [visible, setVisible] = useState(false);
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
+  const frameRef = useRef<number | null>(null);
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    // Al inyectar en el body con position: fixed, ya no necesitamos restar la posición del contenedor.
+    // Usamos clientX y clientY que son relativos a la ventana actual.
+    const tooltipWidth = tooltipRef.current?.offsetWidth ?? 0;
+    const tooltipHeight = tooltipRef.current?.offsetHeight ?? 0;
+    const cursorOffset = 15;
+    
+    let nextX = event.clientX + cursorOffset;
+    let nextY = event.clientY + cursorOffset;
+
+    // Prevenir que el tooltip se salga de la pantalla por la derecha
+    if (event.clientX + tooltipWidth + cursorOffset > window.innerWidth) {
+      nextX = event.clientX - tooltipWidth - cursorOffset;
+    }
+
+    // Prevenir que el tooltip se salga de la pantalla por abajo
+    if (event.clientY + tooltipHeight + cursorOffset > window.innerHeight) {
+      nextY = event.clientY - tooltipHeight - cursorOffset;
+    }
+
+    if (frameRef.current !== null) {
+      cancelAnimationFrame(frameRef.current);
+    }
+
+    frameRef.current = requestAnimationFrame(() => {
+      if (!tooltipRef.current) return;
+      // Usar fixed en el CSS y transformar en 3d asegura alto rendimiento sin reflows
+      tooltipRef.current.style.transform = `translate3d(${nextX}px, ${nextY}px, 0)`;
+      frameRef.current = null;
+    });
+  };
+
+  const handleMouseLeave = () => {
+    if (frameRef.current !== null) {
+      cancelAnimationFrame(frameRef.current);
+      frameRef.current = null;
+    }
+    setVisible(false);
+  };
+
+  // Limpieza del RequestAnimationFrame si el componente se desmonta
+  useEffect(() => {
+    return () => {
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <div
+      className="cursor-pointer contents"
+      onMouseEnter={() => setVisible(true)}
+      onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
+    >
+      {children}
+
+      {visible && typeof document !== 'undefined' && createPortal(
+        <div
+          ref={tooltipRef}
+          className="tooltip fixed z-9999 pointer-events-none left-0 top-0 will-change-transform text-base font-minecraft text-shadow-mc whitespace-pre"
+        >
+          <div className="leading-tight text-lg whitespace-pre">
+            {renderMinecraftText(tooltipTitle, "tooltip-title")}
+          </div>
+          <div className="mt-2 text-base whitespace-pre">
+            {renderMinecraftText(text, "tooltip-text")}
+          </div>
+        </div>,
+        document.body
+      )}
+    </div>
+  );
+};
+
+export default Tooltip;

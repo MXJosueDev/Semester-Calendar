@@ -23,7 +23,7 @@
   --color-footer: #ffffff;
   --color-footer-shadow: #000000;
 
-  --drop-shadow-text: 0.1em 0.1em 0;
+  --text-shadow-mc: 0.1em 0.1em 0 color-mix(in srgb, currentColor, black 75%);
 
   /* Container */
   --color-container-background: #c6c6c6;
@@ -51,9 +51,37 @@
   --spacing-slot-padding: calc(var(--spacing) * 0.5);
   --spacing-slot-padding-lg: calc(var(--spacing) * 1);
   --border-width-slot: calc(var(--spacing) * 0.5);
-
+  
   /* Player */
   --color-player-background: #000000;
+
+  /* Tooltip */
+  --color-tooltip-background: #100010f0;
+  --color-tooltip-frame: #4d00ef50;
+  
+  --spacing-tooltip-padding: calc(var(--spacing) * 0.4);
+  --spacing-tooltip-padding-lg: calc(var(--spacing) * 0.8);
+  
+  --border-width-tooltip: calc(var(--spacing) * 0.4);
+  --outline-width-tooltip: calc(var(--spacing) * 0.8);
+
+  /* Minecraft text colors */
+  --color-minecraft-black: #000000;
+  --color-minecraft-dark-blue: #0000AA;
+  --color-minecraft-dark-green: #00AA00;
+  --color-minecraft-dark-aqua: #00AAAA;
+  --color-minecraft-dark-red: #AA0000;
+  --color-minecraft-dark-purple: #AA00AA;
+  --color-minecraft-gold: #FFAA00;
+  --color-minecraft-gray: #AAAAAA;
+  --color-minecraft-dark-gray: #555555;
+  --color-minecraft-blue: #5555FF;
+  --color-minecraft-green: #55FF55;
+  --color-minecraft-aqua: #55FFFF;
+  --color-minecraft-red: #FF5555;
+  --color-minecraft-light-purple: #FF55FF;
+  --color-minecraft-yellow: #FFFF55;
+  --color-minecraft-white: #FFFFFF;
 
   /* Animations */
   --animate-scale-pulse: scale-pulse 1.5s ease-in-out infinite;
@@ -82,11 +110,15 @@
 }
 
 @utility subtitle {
-  @apply font-minecraft text-subtitle drop-shadow-text drop-shadow-subtitle-shadow absolute bottom-1/2 right-0 translate-1/2 -rotate-25 text-xs sm:text-base md:text-lg lg:text-xl xl:text-2xl animate-scale-pulse;
+  @apply font-minecraft text-subtitle text-shadow-mc text-shadow-subtitle-shadow absolute bottom-1/2 right-0 translate-1/2 -rotate-25 text-xs sm:text-base md:text-lg lg:text-xl xl:text-2xl animate-scale-pulse;
+}
+
+@utility text-nowrap {
+  text-wrap: nowrap;
 }
 
 @utility footer-text {
-  @apply text-footer drop-shadow-text drop-shadow-footer-shadow;
+  @apply text-footer text-shadow-mc text-shadow-footer-shadow;
 }
 
 /* Container */
@@ -169,11 +201,11 @@
 }
 
 @utility slot {
-  @apply flex items-center justify-center bg-slot-background p-slot-padding lg:p-slot-padding-lg aspect-square w-8 md:w-12 lg:w-16;
+  @apply flex items-center justify-center select-none bg-slot-background p-slot-padding lg:p-slot-padding-lg aspect-square w-8 md:w-12 lg:w-16;
 }
 
 @utility slot-quantity {
-  @apply font-minecraft text-sm md:text-xl lg:text-2xl text-slot-quantity drop-shadow-text drop-shadow-slot-quantity-shadow absolute bottom-slot-padding right-slot-padding lg:bottom-slot-padding-lg lg:right-slot-padding-lg leading-none;
+  @apply font-minecraft text-sm md:text-xl lg:text-2xl text-slot-quantity text-shadow-mc text-shadow-slot-quantity-shadow absolute bottom-slot-padding right-slot-padding lg:bottom-slot-padding-lg lg:right-slot-padding-lg leading-none;
 }
 
 /* Player */
@@ -186,4 +218,10 @@
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-crisp-edges;
   image-rendering: pixelated;
+}
+
+/* Tooltip */
+
+@utility tooltip {
+  @apply flex flex-col items-start justify-start bg-tooltip-background p-tooltip-padding lg:p-tooltip-padding-lg border-tooltip border-tooltip-frame outline-tooltip-background outline-tooltip;
 }

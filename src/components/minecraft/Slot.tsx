@@ -1,4 +1,5 @@
 import type { ImageMetadata } from "astro";
+import Tooltip from "./Tooltip";
 
 interface SlotProps {
   image?: string | ImageMetadata;
@@ -8,6 +9,7 @@ interface SlotProps {
 }
 
 const Slot = ({ image, completedImage, completed, quantity }: SlotProps) => {
+
   return (
     <div className="slot slot-border">
       {image && (
@@ -15,6 +17,7 @@ const Slot = ({ image, completedImage, completed, quantity }: SlotProps) => {
           src={typeof image == "string" ? image : image.src}
           alt="Item"
           className="w-full h-full object-contain rendering-pixelated"
+          draggable={false}
         />
       )}
 
@@ -23,6 +26,7 @@ const Slot = ({ image, completedImage, completed, quantity }: SlotProps) => {
           src={typeof completedImage == "string" ? completedImage : completedImage.src}
           alt="Completed Image"
           className="w-full h-full object-contain rendering-pixelated absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-black/50"
+          draggable={false}
         />
       )}
 
