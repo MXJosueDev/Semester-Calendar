@@ -1,0 +1,48 @@
+---
+import { getMusicURL } from "@/utils/resources";
+import Tooltip from "../minecraft/Tooltip";
+---
+
+<audio id="music" autoplay loop preload="auto">
+  <source src={getMusicURL("home.opus")} type="audio/ogg" />
+  <source src={getMusicURL("home.mp3")} type="audio/mpeg" />
+</audio>
+
+<Tooltip client:load tooltipTitle="&bMusic" text="&7Mute/Unmute">
+  <button id="music-btn" class="text-3xl footer-text">
+    <i class="hn hn-sound-on"></i>
+  </button>
+</Tooltip>
+
+<script>
+  import { playClickSound } from "@/utils/sounds";
+
+  const storageKey = "music-muted";
+  const music = document.getElementById("music") as HTMLAudioElement;
+  const musicBtn = document.getElementById("music-btn");
+
+  const updateButtonIcon = () => {
+    if (!musicBtn) return;
+
+    musicBtn.innerHTML = isMuted
+      ? '<i class="hn hn-sound-mute"></i>'
+      : '<i class="hn hn-sound-on"></i>';
+  };
+
+  let isMuted = localStorage.getItem(storageKey) === "true";
+  music.muted = isMuted;
+  updateButtonIcon();
+
+  musicBtn?.addEventListener("click", () => {
+    playClickSound();
+
+    if (music.paused) {
+      music.play();
+    }
+
+    isMuted = !isMuted;
+    music.muted = isMuted;
+    localStorage.setItem(storageKey, isMuted ? "true" : "false");
+    updateButtonIcon();
+  });
+</script>

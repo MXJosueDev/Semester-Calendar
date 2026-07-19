@@ -14,7 +14,7 @@ const useCalendar = () => {
       }
     };
 
-    const interval = setInterval(checkTimeProgress, 1000 * 60 * 1);
+    const interval = setInterval(checkTimeProgress, 1000 * 1 * 1);
 
     return () => clearInterval(interval);
   }, [elapsedWeeks]);

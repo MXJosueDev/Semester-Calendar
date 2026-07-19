@@ -8,12 +8,19 @@ interface SemesterData {
 
 interface MilestonesData {
   milestoneId: number;
+  milestoneSlot: string;
   milestone: string;
+  unlockWeek: number;
   item_texture: string;
   slot_texture: string;
+
+  tooltipTitle: string;
+  milestoneColor: string;
 }
 
 interface WeekData {
   item_texture: string;
-  milestoneId?: number;
+
+  weekType: string;
+  weekColor: string;
 }

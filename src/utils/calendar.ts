@@ -31,7 +31,7 @@ export const getElapsedWeeks = (): number => {
   if(startDate > currentDate) return 0;
 
   const diffTime = Math.abs(currentDate.getTime() - startDate.getTime());
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
   const elapsedWeeks = Math.floor(diffDays / 7);
 
   return elapsedWeeks;
@@ -62,12 +62,36 @@ export const isWeekCompleted = (week: WeekData): boolean => {
 };
 
 export const isMilestoneCompleted = (milestoneId: number): boolean => {
-  const weeks = getWeeks();
-  const milestoneWeek = weeks.find(week => week.milestoneId === milestoneId);
+  const elapsedWeeks = getElapsedWeeks();
+  const milestones = getMilestones();
+  const milestone = milestones.find((m) => m.milestoneId === milestoneId);
 
-  if (!milestoneWeek) {
-    return false;
+  if (!milestone) {
+    throw new Error(`Milestone with ID ${milestoneId} not found.`);
   }
 
-  return isWeekCompleted(milestoneWeek);
+  return elapsedWeeks > milestone.unlockWeek;
 };
+
+export const getWeeksTo = (week: WeekData): number => {
+  const weeks = getWeeks();
+  const weekIndex = weeks.indexOf(week);
+  const elapsedWeeks = getElapsedWeeks();
+
+  return Math.max(0, weekIndex - elapsedWeeks);
+};
+
+export const getWeekStartDate = (week: WeekData): Date => {
+  const data = getSemesterData();
+  const startDate = new Date(data.startDate);
+  const weeks = getWeeks();
+  const weekIndex = weeks.indexOf(week);
+
+  return new Date(startDate.getTime() + weekIndex * 7 * 24 * 60 * 60 * 1000);
+};
+
+export const getWeekEndDate = (week: WeekData): Date => {
+  const startDate = getWeekStartDate(week);
+
+  return new Date(startDate.getTime() + 6 * 24 * 60 * 60 * 1000);
+}
