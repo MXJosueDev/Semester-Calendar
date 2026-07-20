@@ -70,7 +70,7 @@ export const isMilestoneCompleted = (milestoneId: number): boolean => {
     throw new Error(`Milestone with ID ${milestoneId} not found.`);
   }
 
-  return elapsedWeeks > milestone.unlockWeek;
+  return elapsedWeeks >= milestone.unlockWeek;
 };
 
 export const getWeeksTo = (week: WeekData): number => {
