@@ -1,6 +1,6 @@
-export const joinRoutes = (...routes: string[]): string => {
+const joinRoutes = (...routes: string[]): string => {
   const joined = routes.map(route => route.replace(/(^\/+|\/+$)/g, '')).join('/');
-  return joined.startsWith('http') ? joined : `/${joined}`;
+  return joined.startsWith('/') ? joined : `/${joined}`;
 }
 
 export const getTextureURL = (texture: string) => {
@@ -13,4 +13,8 @@ export const getMusicURL = (music: string) => {
 
 export const getSoundURL = (sound: string) => {
   return joinRoutes(`${import.meta.env.BASE_URL}`, `assets/sounds/${sound}`);
+}
+
+export const getModelURL = (model: string) => {
+  return joinRoutes(`${import.meta.env.BASE_URL}`, `assets/models/${model}`);
 }
