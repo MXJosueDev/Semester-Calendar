@@ -2,8 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Player3D } from "./Player3D";
 import { PerspectiveCamera } from "@react-three/drei";
-import { isMilestoneCompleted } from "@/utils/calendar";
-import { isMilestoneCompletedBySlot } from "@/utils/milestone";
+import { isMilestoneCompleted, isMilestoneCompletedBySlot } from "@/utils/calendar";
 
 const HEAD_ROTATION_MAX_X = 0.6;
 const HEAD_ROTATION_MAX_Y = 0.4;

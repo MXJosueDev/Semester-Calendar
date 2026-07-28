@@ -95,3 +95,12 @@ export const getWeekEndDate = (week: WeekData): Date => {
 
   return new Date(startDate.getTime() + 6 * 24 * 60 * 60 * 1000);
 }
+
+export const isMilestoneCompletedBySlot = (milestoneSlot: string): boolean => {
+  const milestones = getMilestones();
+  const milestone = milestones.find(m => m.milestoneSlot === milestoneSlot);
+
+  if (!milestone) return false;
+
+  return isMilestoneCompleted(milestone.milestoneId);
+};
