@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import '@hackernoon/pixel-icon-library/fonts/iconfont.css';
+@import "@hackernoon/pixel-icon-library/fonts/iconfont.css";
 
 @font-face {
   font-family: "minecraftmedium";
@@ -51,37 +51,37 @@
   --spacing-slot-padding: calc(var(--spacing) * 0.5);
   --spacing-slot-padding-lg: calc(var(--spacing) * 1);
   --border-width-slot: calc(var(--spacing) * 0.5);
-  
+
   /* Player */
   --color-player-background: #000000;
 
   /* Tooltip */
   --color-tooltip-background: #100010f0;
   --color-tooltip-frame: #4d00ef50;
-  
+
   --spacing-tooltip-padding: calc(var(--spacing) * 0.4);
   --spacing-tooltip-padding-lg: calc(var(--spacing) * 0.8);
-  
+
   --border-width-tooltip: calc(var(--spacing) * 0.4);
   --outline-width-tooltip: calc(var(--spacing) * 0.8);
 
   /* Minecraft text colors */
   --color-minecraft-black: #000000;
-  --color-minecraft-dark-blue: #0000AA;
-  --color-minecraft-dark-green: #00AA00;
-  --color-minecraft-dark-aqua: #00AAAA;
-  --color-minecraft-dark-red: #AA0000;
-  --color-minecraft-dark-purple: #AA00AA;
-  --color-minecraft-gold: #FFAA00;
-  --color-minecraft-gray: #AAAAAA;
+  --color-minecraft-dark-blue: #0000aa;
+  --color-minecraft-dark-green: #00aa00;
+  --color-minecraft-dark-aqua: #00aaaa;
+  --color-minecraft-dark-red: #aa0000;
+  --color-minecraft-dark-purple: #aa00aa;
+  --color-minecraft-gold: #ffaa00;
+  --color-minecraft-gray: #aaaaaa;
   --color-minecraft-dark-gray: #555555;
-  --color-minecraft-blue: #5555FF;
-  --color-minecraft-green: #55FF55;
-  --color-minecraft-aqua: #55FFFF;
-  --color-minecraft-red: #FF5555;
-  --color-minecraft-light-purple: #FF55FF;
-  --color-minecraft-yellow: #FFFF55;
-  --color-minecraft-white: #FFFFFF;
+  --color-minecraft-blue: #5555ff;
+  --color-minecraft-green: #55ff55;
+  --color-minecraft-aqua: #55ffff;
+  --color-minecraft-red: #ff5555;
+  --color-minecraft-light-purple: #ff55ff;
+  --color-minecraft-yellow: #ffff55;
+  --color-minecraft-white: #ffffff;
 
   /* Animations */
   --animate-scale-pulse: scale-pulse 1.5s ease-in-out infinite;
@@ -119,6 +119,11 @@
 
 @utility footer-text {
   @apply text-footer text-shadow-mc text-shadow-footer-shadow;
+}
+
+body[data-page-visible="false"] .animate-background,
+body[data-page-visible="false"] .animate-scale-pulse {
+  animation-play-state: paused;
 }
 
 /* Container */
