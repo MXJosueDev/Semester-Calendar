@@ -4,8 +4,8 @@ Command: npx gltfjsx@6.5.3 player.glb --types --keep-groups
 */
 
 import * as THREE from "three";
-import { useMemo, useRef, type JSX, type ReactNode } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useEffect, useMemo, useRef, type JSX, type ReactNode } from "react";
+import { useThree } from "@react-three/fiber";
 import { useGLTF, useTexture } from "@react-three/drei";
 import type { GLTF } from "three-stdlib";
 import { getModelURL } from "@/utils/resources";
@@ -60,30 +60,60 @@ function AnimatedRotationGroup({
 }: AnimatedRotationGroupProps) {
   const groupRef = useRef<THREE.Group>(null);
   const currentRotation = useRef<[number, number, number]>([0, 0, 0]);
+  const frameRef = useRef<number | null>(null);
+  const invalidate = useThree(state => state.invalidate);
 
-  useFrame((_, delta) => {
-    const damping = 1 - Math.exp(-delta * 12);
+  useEffect(() => {
+    const startRotation = [...currentRotation.current] as [number, number, number];
+    const duration = 120;
+    const startTime = performance.now();
 
-    currentRotation.current[0] = THREE.MathUtils.lerp(
-      currentRotation.current[0],
-      rotationTarget[0],
-      damping
-    );
-    currentRotation.current[1] = THREE.MathUtils.lerp(
-      currentRotation.current[1],
-      rotationTarget[1],
-      damping
-    );
-    currentRotation.current[2] = THREE.MathUtils.lerp(
-      currentRotation.current[2],
-      rotationTarget[2],
-      damping
-    );
+    const animate = (now: number) => {
+      const elapsed = Math.min((now - startTime) / duration, 1);
+      const easing = 1 - Math.pow(1 - elapsed, 3);
 
-    if (groupRef.current) {
-      groupRef.current.rotation.set(...currentRotation.current);
+      currentRotation.current[0] = THREE.MathUtils.lerp(
+        startRotation[0],
+        rotationTarget[0],
+        easing
+      );
+      currentRotation.current[1] = THREE.MathUtils.lerp(
+        startRotation[1],
+        rotationTarget[1],
+        easing
+      );
+      currentRotation.current[2] = THREE.MathUtils.lerp(
+        startRotation[2],
+        rotationTarget[2],
+        easing
+      );
+
+      if (groupRef.current) {
+        groupRef.current.rotation.set(...currentRotation.current);
+      }
+
+      invalidate();
+
+      if (elapsed < 1) {
+        frameRef.current = requestAnimationFrame(animate);
+      } else {
+        frameRef.current = null;
+      }
+    };
+
+    if (frameRef.current !== null) {
+      cancelAnimationFrame(frameRef.current);
     }
-  });
+
+    frameRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
+        frameRef.current = null;
+      }
+    };
+  }, [invalidate, rotationTarget]);
 
   return (
     <group ref={groupRef} position={position}>

@@ -3,6 +3,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { Player3D } from "./Player3D";
 import { PerspectiveCamera } from "@react-three/drei";
 import { isMilestoneCompleted, isMilestoneCompletedBySlot } from "@/utils/calendar";
+import usePageVisibility from "@/hooks/usePageVisibility";
 
 const HEAD_ROTATION_MAX_X = 0.6;
 const HEAD_ROTATION_MAX_Y = 0.4;
@@ -13,8 +14,15 @@ const Player = () => {
   const [headRotation, setHeadRotation] = useState<[number, number, number]>([0, 0, 0]);
   const frameRef = useRef<number | null>(null);
   const targetRotationRef = useRef<[number, number, number]>([0, 0, 0]);
+  const isPageVisible = usePageVisibility();
 
   useEffect(() => {
+    if (!isPageVisible) {
+      targetRotationRef.current = [0, 0, 0];
+      setHeadRotation([0, 0, 0]);
+      return;
+    }
+
     const handlePointerMove = (event: PointerEvent) => {
       const normalizedX = event.clientX / window.innerWidth;
       const normalizedY = event.clientY / window.innerHeight;
@@ -58,13 +66,15 @@ const Player = () => {
         cancelAnimationFrame(frameRef.current);
       }
     };
-  }, []);
-
-
+  }, [isPageVisible]);
 
   return (
     <div className="player slot-border">
-      <Canvas>
+      <Canvas
+        frameloop={isPageVisible ? "demand" : "never"}
+        dpr={[1, 1.5]}
+        gl={{ antialias: false, powerPreference: "low-power", alpha: true }}
+      >
         <ambientLight intensity={1.5} color="#ffffff" />
 
         <PerspectiveCamera makeDefault position={[0, 1, 3.5]} />

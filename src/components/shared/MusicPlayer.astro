@@ -3,12 +3,12 @@ import { getMusicURL } from "@/utils/resources";
 import Tooltip from "../minecraft/Tooltip";
 ---
 
-<audio id="music" autoplay loop preload="auto">
+<audio id="music" autoplay loop preload="metadata">
   <source src={getMusicURL("home.opus")} type="audio/ogg" />
   <source src={getMusicURL("home.mp3")} type="audio/mpeg" />
 </audio>
 
-<Tooltip client:load tooltipTitle="&bMusic" text="&7Mute/Unmute">
+<Tooltip tooltipTitle="&bMusic" text="&7Mute/Unmute" client:load>
   <button id="music-btn" class="text-2xl md:text-3xl footer-text">
     <i class="hn hn-sound-on"></i>
   </button>
@@ -20,6 +20,7 @@ import Tooltip from "../minecraft/Tooltip";
   const storageKey = "music-muted";
   const music = document.getElementById("music") as HTMLAudioElement;
   const musicBtn = document.getElementById("music-btn");
+  let shouldResumePlayback = false;
 
   const updateButtonIcon = () => {
     if (!musicBtn) return;
@@ -33,11 +34,27 @@ import Tooltip from "../minecraft/Tooltip";
   music.muted = isMuted;
   updateButtonIcon();
 
+  const handleVisibilityChange = () => {
+    if (document.visibilityState === "hidden") {
+      shouldResumePlayback = !music.paused && !music.muted;
+      music.pause();
+      return;
+    }
+
+    if (shouldResumePlayback && !music.muted) {
+      music.play().catch(() => undefined);
+    }
+
+    shouldResumePlayback = false;
+  };
+
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+
   musicBtn?.addEventListener("click", () => {
     playClickSound();
 
     if (music.paused) {
-      music.play();
+      music.play().catch(() => undefined);
     }
 
     isMuted = !isMuted;

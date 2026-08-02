@@ -22,5 +22,14 @@ import "@/styles/global.css";
     </div>
 
     <Footer />
+
+    <script is:inline>
+      const setPageVisibility = () => {
+        document.body.dataset.pageVisible = String(document.visibilityState === "visible");
+      };
+
+      setPageVisibility();
+      document.addEventListener("visibilitychange", setPageVisibility);
+    </script>
   </body>
 </html>
